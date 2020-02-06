@@ -1,0 +1,7 @@
+{
+    "name": "drupal/commerce_option",
+    "description": "Automates attribute creation.",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev"
+}
