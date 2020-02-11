@@ -1,0 +1,32 @@
+{
+    "name": "drupal/commerce_option",
+    "description": "This module allows store managers to offer products with multiple options while maintaining a single SKU. It provides an alternative to attribute based variations.",
+    "keywords": ["Drupal"],
+    "homepage": "https://www.drupal.org/sandbox/krystalcode/3111714",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "shabana.navas",
+            "homepage": "https://www.drupal.org/u/shabananavas",
+            "role": "Maintainer"
+        },
+        {
+            "name": "krystalcode",
+            "homepage": "https://www.drupal.org/u/krystalcode",
+            "role": "Co-maintainer"
+        },
+        {
+            "name": "thenchev",
+            "homepage": "https://www.drupal.org/u/thenchev",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/3111714"
+    },
+    "require": {
+        "drupal/commerce": "~2.16"
+    }
+}

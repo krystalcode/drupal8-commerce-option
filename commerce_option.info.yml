@@ -1,0 +1,5 @@
+name: Commerce Option
+description: This module allows store managers to offer products with multiple options while maintaining a single SKU. It provides an alternative to attribute based variations.
+type: module
+package: Commerce (contrib)
+core: 8.x
