@@ -22,6 +22,11 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "access" = "Drupal\entity\EntityAccessControlHandler",
  *     "permission_provider" = "Drupal\entity\EntityPermissionProvider",
  *     "list_builder" = "Drupal\commerce_option\ProductOptionListBuilder",
+ *     "form" = {
+ *       "add" = "Drupal\commerce_option\Form\ProductOptionForm",
+ *       "edit" = "Drupal\commerce_option\Form\ProductOptionForm",
+ *       "delete" = "Drupal\commerce_option\Form\ProductOptionDeleteForm",
+ *     },
  *     "local_task_provider" = {
  *       "default" = "Drupal\entity\Menu\DefaultEntityLocalTaskProvider",
  *     },

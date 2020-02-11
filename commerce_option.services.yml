@@ -1,0 +1,4 @@
+services:
+  commerce_option.option_field_manager:
+    class: Drupal\commerce_option\ProductOptionFieldManager
+    arguments: ['@entity_field.manager', '@entity_type.bundle.info', '@entity_type.manager', '@cache.data']
