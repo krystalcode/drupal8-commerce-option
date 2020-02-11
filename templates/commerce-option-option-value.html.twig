@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ *
+ * Default template for product attribute values.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the wrapper.
+ * - option_value: The rendered product attribute value fields.
+ *   Use 'option_value' to print them all, or print a subset such as
+ *   'option_value.name'. Use the following code to exclude the
+ *   printing of a given field:
+ *   @code
+ *   {{ option_value|without('name') }}
+ *   @endcode
+ * - option_value_entity: The product option value entity.
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes }}>
+  {{- option_value -}}
+</div>

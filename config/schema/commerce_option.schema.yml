@@ -1,0 +1,13 @@
+commerce_option.commerce_product_option.*:
+  type: config_entity
+  label: 'Product attribute'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    elementType:
+      type: string
+      label: 'Element type'
