@@ -45,7 +45,8 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *   config_export = {
  *     "id",
  *     "label",
- *     "elementType"
+ *     "elementType",
+ *     "productTypes"
  *   },
  *   links = {
  *     "add-form" = "/admin/commerce/product-options/add",
@@ -79,6 +80,13 @@ class ProductOption extends ConfigEntityBundleBase implements ProductOptionInter
   protected $elementType = 'select';
 
   /**
+   * The list of product types.
+   *
+   * @var array
+   */
+  protected $productTypes;
+
+  /**
    * {@inheritdoc}
    */
   public function getValues() {
@@ -101,6 +109,24 @@ class ProductOption extends ConfigEntityBundleBase implements ProductOptionInter
    */
   public function getElementType() {
     return $this->elementType;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getProductTypes() {
+    if ($this->productTypes) {
+      $values = [];
+      array_walk_recursive($this->productTypes, function ($value, $key) use (&$values) {
+        $values[] = $value;
+      }, $values);
+
+      return $this->entityTypeManager()
+        ->getStorage('commerce_product_type')
+        ->loadMultiple($values);
+    }
+
+    return [];
   }
 
   /**
