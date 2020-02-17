@@ -2,13 +2,15 @@
 
 namespace Drupal\commerce_option\Form;
 
+use Drupal\commerce_option\ProductOptionFieldManagerInterface;
 use Drupal\commerce\EntityHelper;
 use Drupal\commerce\InlineFormManager;
-use Drupal\commerce_option\ProductOptionFieldManagerInterface;
+
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\BundleEntityFormBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

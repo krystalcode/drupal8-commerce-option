@@ -1,6 +1,6 @@
 commerce_option.commerce_product_option.*:
   type: config_entity
-  label: 'Product attribute'
+  label: 'Product option'
   mapping:
     id:
       type: string

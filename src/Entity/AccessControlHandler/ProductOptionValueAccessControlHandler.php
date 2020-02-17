@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\commerce_option;
+namespace Drupal\commerce_option\Entity\AccessControlHandler;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityAccessControlHandler as CoreEntityAccessControlHandler;
@@ -32,7 +32,7 @@ class ProductOptionValueAccessControlHandler extends CoreEntityAccessControlHand
   protected $entityTypeManager;
 
   /**
-   * Constructs a new ProductAttributeValueAccessControlHandler object.
+   * Constructs a new ProductOptionValueAccessControlHandler object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type definition.
@@ -83,11 +83,11 @@ class ProductOptionValueAccessControlHandler extends CoreEntityAccessControlHand
     }
 
     $product_option_storage = $this->entityTypeManager->getStorage('commerce_option_product_option');
-    $product_attribute = $product_option_storage->create([
+    $product_option = $product_option_storage->create([
       'id' => $entity_bundle,
     ]);
 
-    return $product_attribute->access('update', $account, TRUE);
+    return $product_option->access('update', $account, TRUE);
   }
 
 }

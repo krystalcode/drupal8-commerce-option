@@ -20,7 +20,7 @@ class ProductOptionValueEvent extends Event {
   protected $optionValue;
 
   /**
-   * Constructs a new ProductAttributeValueEvent.
+   * Constructs a new ProductOptionValueEvent.
    *
    * @param \Drupal\commerce_option\Entity\ProductOptionValueInterface $option_value
    *   The product option value.

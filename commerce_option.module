@@ -30,9 +30,9 @@ function commerce_option_theme() {
  */
 function template_preprocess_commerce_option_option_value(array &$variables) {
   /** @var Drupal\commerce_option\Entity\ProductOptionValueInterface $product */
-  $attribute_value = $variables['elements']['#commerce_option_option_value'];
+  $option_value = $variables['elements']['#commerce_option_option_value'];
 
-  $variables['option_value_entity'] = $attribute_value;
+  $variables['option_value_entity'] = $option_value;
   $variables['option_value'] = [];
   foreach (Element::children($variables['elements']) as $key) {
     $variables['option_value'][$key] = $variables['elements'][$key];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\commerce_option;
+namespace Drupal\commerce_option\Entity\ListBuilder;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;

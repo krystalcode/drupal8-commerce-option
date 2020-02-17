@@ -23,7 +23,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   handlers = {
  *     "event" = "Drupal\commerce_option\Event\ProductOptionValueEvent",
  *     "storage" = "Drupal\commerce_option\ProductOptionValueStorage",
- *     "access" = "Drupal\commerce_option\ProductOptionValueAccessControlHandler",
+ *     "access" = "Drupal\commerce_option\Entity\AccessControlHandler\ProductOptionValueAccessControlHandler",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "views_data" = "Drupal\commerce\CommerceEntityViewsData",
  *     "translation" = "Drupal\content_translation\ContentTranslationHandler"
