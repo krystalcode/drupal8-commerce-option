@@ -115,18 +115,18 @@ class ProductOption extends ConfigEntityBundleBase implements ProductOptionInter
    * {@inheritdoc}
    */
   public function getProductTypes() {
-    if ($this->productTypes) {
-      $values = [];
-      array_walk_recursive($this->productTypes, function ($value, $key) use (&$values) {
-        $values[] = $value;
-      }, $values);
-
-      return $this->entityTypeManager()
-        ->getStorage('commerce_product_type')
-        ->loadMultiple($values);
+    if (!$this->productTypes) {
+      return [];
     }
 
-    return [];
+    $values = [];
+    array_walk_recursive($this->productTypes, function ($value, $key) use (&$values) {
+      $values[] = $value;
+    }, $values);
+
+    return $this->entityTypeManager()
+      ->getStorage('commerce_product_type')
+      ->loadMultiple($values);
   }
 
   /**
