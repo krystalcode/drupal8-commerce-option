@@ -93,6 +93,10 @@ class ProductOptionForm extends BundleEntityFormBase {
       '#default_value' => $option->getElementType(),
     ];
 
+    // @I This field type should be changed to checkboxes
+    //    type     : task
+    //    priority : normal
+    //    labels   : option
     $form['productTypes'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Product type'),
