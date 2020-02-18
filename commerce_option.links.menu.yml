@@ -1,0 +1,5 @@
+entity.commerce_option_product_option.collection:
+  title: 'Product option'
+  route_name: 'entity.commerce_option_product_option.collection'
+  parent: 'commerce.admin_commerce'
+  description: 'Manage your product options.'

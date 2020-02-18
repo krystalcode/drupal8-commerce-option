@@ -1,0 +1,5 @@
+entity.commerce_option_product_option.add_form:
+  route_name: entity.commerce_option_product_option.add_form
+  title: 'Add product option'
+  appears_on:
+    - entity.commerce_option_product_option.collection

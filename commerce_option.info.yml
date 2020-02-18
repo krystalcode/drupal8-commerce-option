@@ -3,3 +3,6 @@ description: This module allows store managers to offer products with multiple o
 type: module
 package: Commerce (contrib)
 core: 8.x
+dependencies:
+  - commerce:commerce
+  - commerce:commerce_product
