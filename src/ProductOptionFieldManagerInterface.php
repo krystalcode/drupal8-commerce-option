@@ -50,7 +50,7 @@ interface ProductOptionFieldManagerInterface {
   public function clearCaches();
 
   /**
-   * Creates an option field for the given attribute.
+   * Creates an option field for the given option.
    *
    * @param \Drupal\commerce_option\Entity\ProductOptionInterface $option
    *   The product option.
