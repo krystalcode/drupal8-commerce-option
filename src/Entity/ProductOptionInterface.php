@@ -25,4 +25,12 @@ interface ProductOptionInterface extends ConfigEntityInterface {
    */
   public function getElementType();
 
+  /**
+   * Gets the product types that the Product Options should be available on.
+   *
+   * @return \Drupal\commerce_product\Entity\ProductTypeInterface[]
+   *   Returns an array of product types.
+   */
+  public function getProductTypes();
+
 }

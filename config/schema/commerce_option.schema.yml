@@ -11,3 +11,14 @@ commerce_option.commerce_product_option.*:
     elementType:
       type: string
       label: 'Element type'
+    productTypes:
+      type: sequence
+      label: 'Product types'
+      sequence:
+        type: mapping
+        label: 'Product type'
+        mapping:
+          target_id:
+            type: string
+            label: 'Value'
+
