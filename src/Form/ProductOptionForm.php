@@ -2,13 +2,15 @@
 
 namespace Drupal\commerce_option\Form;
 
+use Drupal\commerce_option\ProductOptionFieldManagerInterface;
 use Drupal\commerce\EntityHelper;
 use Drupal\commerce\InlineFormManager;
-use Drupal\commerce_option\ProductOptionFieldManagerInterface;
+
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\BundleEntityFormBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -93,6 +95,10 @@ class ProductOptionForm extends BundleEntityFormBase {
       '#default_value' => $option->getElementType(),
     ];
 
+    // @I This field type should be changed to checkboxes
+    //    type     : task
+    //    priority : normal
+    //    labels   : option
     $form['productTypes'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Product type'),

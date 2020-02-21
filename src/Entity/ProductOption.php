@@ -21,7 +21,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *   handlers = {
  *     "access" = "Drupal\entity\EntityAccessControlHandler",
  *     "permission_provider" = "Drupal\entity\EntityPermissionProvider",
- *     "list_builder" = "Drupal\commerce_option\ProductOptionListBuilder",
+ *     "list_builder" = "Drupal\commerce_option\Entity\ListBuilder\ProductOptionListBuilder",
  *     "form" = {
  *       "add" = "Drupal\commerce_option\Form\ProductOptionForm",
  *       "edit" = "Drupal\commerce_option\Form\ProductOptionForm",
@@ -115,25 +115,25 @@ class ProductOption extends ConfigEntityBundleBase implements ProductOptionInter
    * {@inheritdoc}
    */
   public function getProductTypes() {
-    if ($this->productTypes) {
-      $values = [];
-      array_walk_recursive($this->productTypes, function ($value, $key) use (&$values) {
-        $values[] = $value;
-      }, $values);
-
-      return $this->entityTypeManager()
-        ->getStorage('commerce_product_type')
-        ->loadMultiple($values);
+    if (!$this->productTypes) {
+      return [];
     }
 
-    return [];
+    $values = [];
+    array_walk_recursive($this->productTypes, function ($value, $key) use (&$values) {
+      $values[] = $value;
+    }, $values);
+
+    return $this->entityTypeManager()
+      ->getStorage('commerce_product_type')
+      ->loadMultiple($values);
   }
 
   /**
    * {@inheritdoc}
    */
   public static function postDelete(EntityStorageInterface $storage, array $entities) {
-    /** @var \Drupal\commerce_product\Entity\ProductAttributeInterface[] $entities */
+    /** @var \Drupal\commerce_option\Entity\ProductOptionInterface[] $entities */
     parent::postDelete($storage, $entities);
 
     // Delete all associated values.

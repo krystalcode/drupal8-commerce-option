@@ -37,11 +37,11 @@ class OptionValueStorageTest extends CommerceKernelTestBase {
    * Tests loadMultipleByOption()
    */
   public function testLoadMultipleByOption() {
-    $color_attribute = ProductOption::create([
+    $color_option = ProductOption::create([
       'id' => 'color',
       'label' => 'Color',
     ]);
-    $color_attribute->save();
+    $color_option->save();
 
     ProductOptionValue::create([
       'product_option' => 'color',
