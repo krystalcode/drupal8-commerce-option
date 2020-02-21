@@ -38,3 +38,23 @@ function template_preprocess_commerce_option_option_value(array &$variables) {
     $variables['option_value'][$key] = $variables['elements'][$key];
   }
 }
+
+/**
+ * Inserts an array value into a specific position in another array.
+ *
+ * @param $arrayValueToPosition
+ *   Array value to position.
+ * @param $wholeArray
+ *   Array to position into.
+ * @param $position
+ *   The position number.
+ *
+ * @return array
+ *   Merged array
+ */
+function positionArrayElement($arrayValueToPosition, $wholeArray, $position) {
+  $firstPart = array_slice($wholeArray, 0, $position);
+  $lastPart = array_slice($wholeArray, $position, count($wholeArray) - $position);
+
+  return array_merge($firstPart, $arrayValueToPosition, $lastPart);
+}

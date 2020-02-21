@@ -5,3 +5,8 @@ services:
   commerce_option.option_resolver:
     class: Drupal\commerce_option\Resolver\OptionResolver
     arguments: ['@entity_type.manager']
+  commerce_option.cart_subscriber:
+    class: Drupal\commerce_option\EventSubscriber\CartEventSubscriber
+    arguments: ['@tempstore.private']
+    tags:
+      - { name: event_subscriber }

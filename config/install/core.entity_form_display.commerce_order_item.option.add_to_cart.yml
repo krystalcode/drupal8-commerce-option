@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_item_type.option
+    - core.entity_form_mode.commerce_order_item.add_to_cart
+  module:
+    - commerce_option
+    - commerce_order
+id: commerce_order_item.option.add_to_cart
+targetEntityType: commerce_order_item
+bundle: option
+mode: add_to_cart
+content:
+  purchased_entity:
+    type: commerce_product_variation_options
+    weight: -1
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  quantity:
+    type: commerce_quantity
+    weight: 1
+    region: content
+    settings:
+      step: '1'
+      placeholder: ''
+    third_party_settings: {  }
+  unit_price:
+    type: commerce_unit_price
+    weight: 2
+    settings:
+      require_confirmation: true
+    region: content
+    third_party_settings: {  }
+hidden:
+  created: true

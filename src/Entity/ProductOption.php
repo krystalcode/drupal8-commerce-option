@@ -115,7 +115,7 @@ class ProductOption extends ConfigEntityBundleBase implements ProductOptionInter
    * {@inheritdoc}
    */
   public function getProductTypes() {
-    if (!$this->productTypes) {
+    if (!$this->productTypes || !is_array($this->productTypes)) {
       return [];
     }
 

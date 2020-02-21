@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_option
+    - commerce_order
+id: commerce_order_item.field_options
+field_name: field_options
+entity_type: commerce_order_item
+type: entity_reference
+settings:
+  target_type: commerce_option_option_value
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

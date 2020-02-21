@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - commerce_option
+id: option
+label: Option
+description: ''
+variationType: option
+multipleVariations: true
+injectVariationFields: true
+traits: {  }
+locked: false

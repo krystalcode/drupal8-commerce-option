@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - commerce_option
+label: Option
+id: option
+workflow: order_default
+numberPattern: null
+refresh_mode: customer
+refresh_frequency: 300
+sendReceipt: true
+receiptBcc: ''
+traits: {  }
+locked: false
