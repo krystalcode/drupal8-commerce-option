@@ -20,13 +20,13 @@ class CartEventSubscriber implements EventSubscriberInterface {
    *
    * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
-  protected $tempstorePrivate;
+  protected $tempStore;
 
   /**
    * Constructs a new CartEventSubscriber object.
    */
   public function __construct(PrivateTempStoreFactory $tempstore_private) {
-    $this->tempstorePrivate = $tempstore_private;
+    $this->tempStore = $tempstore_private;
   }
 
   /**
@@ -46,16 +46,16 @@ class CartEventSubscriber implements EventSubscriberInterface {
    *   The dispatched event.
    */
   public function addOptions(Event $event) {
-    $variation = $this->tempstorePrivate->get('commerce_option')->get('variation_id');
-    $options = $this->tempstorePrivate->get('commerce_option')->get('options');
+    $variation_id = $this->tempStore->get('commerce_option')->get('variation_id');
+    $options = $this->tempStore->get('commerce_option')->get('options');
 
-    if (!$variation || !$options) {
+    if (!$variation_id || !$options) {
       return;
     }
 
     $orderItem = $event->getOrderItem();
     $purchasedEntity = $orderItem->getPurchasedEntity();
-    if ($purchasedEntity->id() !== $variation) {
+    if ($purchasedEntity->id() !== $variation_id) {
       return;
     }
 
@@ -65,8 +65,8 @@ class CartEventSubscriber implements EventSubscriberInterface {
 
     $orderItem->save();
 
-    $this->tempstorePrivate->get('commerce_option')->delete('variation_id');
-    $this->tempstorePrivate->get('commerce_option')->delete('options');
+    $this->tempStore->get('commerce_option')->delete('variation_id');
+    $this->tempStore->get('commerce_option')->delete('options');
   }
 
   /**
@@ -87,13 +87,15 @@ class CartEventSubscriber implements EventSubscriberInterface {
         continue;
       }
 
-      if ($existingOrderItem->field_options->equals($optionsItemList)) {
-        $newQuantity = Calculator::add($orderItem->getQuantity(), $existingOrderItem->getQuantity());
-        $existingOrderItem->setQuantity($newQuantity);
-        $existingOrderItem->save();
-        $cart->removeItem($orderItem);
-        $orderItem->delete();
+      if (!$existingOrderItem->field_options->equals($optionsItemList)) {
+        return;
       }
+
+      $newQuantity = Calculator::add($orderItem->getQuantity(), $existingOrderItem->getQuantity());
+      $existingOrderItem->setQuantity($newQuantity);
+      $existingOrderItem->save();
+      $cart->removeItem($orderItem);
+      $orderItem->delete();
     }
   }
 

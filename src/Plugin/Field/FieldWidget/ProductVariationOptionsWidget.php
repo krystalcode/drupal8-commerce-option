@@ -155,7 +155,7 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
       '#value' => $selected_variation->id(),
     ];
 
-    // Build the full attribute form.
+    // Build the full options form.
     $wrapper_id = Html::getUniqueId('commerce-product-add-to-cart-form');
     $form += [
       '#wrapper_id' => $wrapper_id,
@@ -192,26 +192,6 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
     }
 
     return $element;
-  }
-
-  /**
-   * Returns the product variation.
-   *
-   * @param \Drupal\commerce_product\Entity\ProductInterface $product
-   *   The product.
-   *
-   * @return \Drupal\commerce_product\Entity\ProductVariationInterface|null
-   *   The product variation or null. This widget only supports one variation.
-   */
-  protected function getVariation(ProductInterface $product) {
-    $variations = $this->loadEnabledVariations($product);
-
-    if (!$variations) {
-
-      return NULL;
-    }
-
-    return reset($variations);
   }
 
   /**
