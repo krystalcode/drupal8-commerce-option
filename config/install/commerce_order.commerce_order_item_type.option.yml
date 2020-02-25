@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - commerce_option
+label: Option
+id: option
+purchasableEntityType: commerce_product_variation
+orderType: option
+traits: {  }
+locked: false

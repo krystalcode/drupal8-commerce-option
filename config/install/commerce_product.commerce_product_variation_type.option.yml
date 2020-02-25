@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - commerce_option
+id: option
+label: Option
+orderItemType: option
+generateTitle: false
+traits: {  }
+locked: false

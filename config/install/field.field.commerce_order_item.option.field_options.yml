@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_item_type.option
+    - field.storage.commerce_order_item.field_options
+  enforced:
+    module:
+      - commerce_option
+id: commerce_order_item.option.field_options
+field_name: field_options
+entity_type: commerce_order_item
+bundle: option
+label: Options
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:commerce_option_option_value'
+  handler_settings: {  }
+field_type: entity_reference

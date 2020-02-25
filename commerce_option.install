@@ -1,0 +1,28 @@
+<?php
+
+use Drupal\views\Views;
+
+/**
+ * Implements hook_install().
+ */
+function commerce_option_install() {
+  $view = Views::getView('commerce_cart_form');
+
+  if (!$view) {
+    return;
+  }
+
+  $optionsField['field_options'] = [
+    'id' => 'field_options',
+    'table' => 'commerce_order_item__field_options',
+    'field' => 'field_options',
+    'relationship' => 'order_items',
+    'label' => 'Options',
+  ];
+
+  $view->initHandlers();
+  $fields = $view->displayHandlers->get('default')->getOption('fields');
+  $overrideOptionFields = positionArrayElement($optionsField, $fields, 3);
+  $view->displayHandlers->get('default')->overrideOption('fields', $overrideOptionFields);
+  $view->save();
+}
