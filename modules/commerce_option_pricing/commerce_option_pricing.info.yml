@@ -1,0 +1,8 @@
+name: 'Commerce Option Pricing'
+type: module
+description: 'This module allows for option based pricing.'
+core: 8.x
+package: 'Commerce (contrib)'
+dependencies:
+  - commerce_option:commerce_option
+
