@@ -3,6 +3,7 @@
 namespace Drupal\commerce_option_pricing\Event;
 
 use Drupal\commerce\PurchasableEntityInterface;
+
 use Symfony\Component\EventDispatcher\Event;
 
 /**

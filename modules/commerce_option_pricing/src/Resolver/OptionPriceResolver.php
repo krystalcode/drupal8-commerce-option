@@ -12,6 +12,7 @@ use Drupal\commerce_price\Resolver\PriceResolverInterface;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
+
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -79,6 +80,8 @@ class OptionPriceResolver implements PriceResolverInterface {
     }
 
     $field_name = $context->getData('field_name', 'price');
+
+    // Handle the base case where we use the default price filed.
     if ($field_name == 'price') {
       $price = $entity->getPrice()->getNumber();
       $totalPrice = Calculator::multiply(Calculator::add($price, $addedPrice), $quantity);
@@ -91,6 +94,9 @@ class OptionPriceResolver implements PriceResolverInterface {
 
       return new Price($totalPrice, $currencyCode);
     }
+
+    // Handle the case where the field is not the default price field and we get
+    // the price a bit differently.
     elseif ($entity->hasField($field_name) && !$entity->get($field_name)->isEmpty()) {
       $price = $entity->get($field_name)->first()->toPrice()->getNumber();
       $totalPrice = Calculator::multiply(Calculator::add($price, $addedPrice), $quantity);;
