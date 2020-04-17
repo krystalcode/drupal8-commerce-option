@@ -27,6 +27,6 @@
         "issues": "https://www.drupal.org/project/issues/3111714"
     },
     "require": {
-        "drupal/commerce": "~2.16"
+        "drupal/commerce": "~2.14"
     }
 }
