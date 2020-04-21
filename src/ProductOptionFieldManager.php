@@ -3,6 +3,9 @@
 namespace Drupal\commerce_option;
 
 use Drupal\commerce_option\Entity\ProductOptionInterface;
+
+use Drupal\commerce_product\Entity\ProductVariationInterface;
+
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
@@ -187,7 +190,7 @@ class ProductOptionFieldManager implements ProductOptionFieldManagerInterface {
         'field_storage' => $field_storage,
         'bundle' => $variation_type_id,
         'label' => $option->label(),
-        'required' => TRUE,
+        'required' => FALSE,
         'settings' => [
           'handler' => 'default',
           'handler_settings' => [
@@ -244,6 +247,31 @@ class ProductOptionFieldManager implements ProductOptionFieldManagerInterface {
       $field->delete();
       $this->clearCaches();
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOptionValues(ProductVariationInterface $product_variation) {
+    $option_values = [];
+    foreach ($this->getOptionFieldNames($product_variation) as $field_name) {
+      $field = $product_variation->get($field_name);
+      if (!$field->isEmpty()) {
+        $option_values[$field_name] = $field->entity;
+      }
+    }
+
+    return $option_values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOptionFieldNames(ProductVariationInterface $entity) {
+    $field_map = $this->getFieldMap(
+      $entity->bundle()
+    );
+    return array_column($field_map, 'field_name');
   }
 
   /**

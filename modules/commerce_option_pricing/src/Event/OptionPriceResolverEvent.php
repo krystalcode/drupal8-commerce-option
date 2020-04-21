@@ -51,7 +51,12 @@ class OptionPriceResolverEvent extends Event {
    * @param string $totalPrice
    *   The total calculated price.
    */
-  public function __construct(PurchasableEntityInterface $entity, $quantity, array $options, $totalPrice) {
+  public function __construct(
+    PurchasableEntityInterface $entity,
+    $quantity,
+    array $options,
+    $totalPrice
+  ) {
     $this->entity = $entity;
     $this->quantity = $quantity;
     $this->options = $options;

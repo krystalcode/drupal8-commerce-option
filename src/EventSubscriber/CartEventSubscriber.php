@@ -33,40 +33,9 @@ class CartEventSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events[CartEvents::CART_ENTITY_ADD][] = ['addOptions'];
     $events[CartEvents::CART_ENTITY_ADD][] = ['mergeOrderItems'];
 
     return $events;
-  }
-
-  /**
-   * Adds the option values to the new order item.
-   *
-   * @param \Symfony\Component\EventDispatcher\Event $event
-   *   The dispatched event.
-   */
-  public function addOptions(Event $event) {
-    $variation_id = $this->tempStore->get('commerce_option')->get('variation_id');
-    $options = $this->tempStore->get('commerce_option')->get('options');
-
-    if (!$variation_id || !$options) {
-      return;
-    }
-
-    $orderItem = $event->getOrderItem();
-    $purchasedEntity = $orderItem->getPurchasedEntity();
-    if ($purchasedEntity->id() !== $variation_id) {
-      return;
-    }
-
-    foreach ($options as $option) {
-      $orderItem->field_options[] = ['target_id' => $option];
-    }
-
-    $orderItem->save();
-
-    $this->tempStore->get('commerce_option')->delete('variation_id');
-    $this->tempStore->get('commerce_option')->delete('options');
   }
 
   /**

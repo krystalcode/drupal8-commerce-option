@@ -1,6 +1,7 @@
 services:
   commerce_option_pricing.option_price_resolver:
     class: Drupal\commerce_option_pricing\Resolver\OptionPriceResolver
-    arguments: ['@tempstore.private', '@entity_type.manager', '@event_dispatcher']
+    arguments:
+      - '@entity_type.manager'
     tags:
       - { name: commerce_price.price_resolver }

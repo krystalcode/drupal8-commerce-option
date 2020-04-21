@@ -4,6 +4,8 @@ namespace Drupal\commerce_option;
 
 use Drupal\commerce_option\Entity\ProductOptionInterface;
 
+use Drupal\commerce_product\Entity\ProductVariationInterface;
+
 /**
  * Manages option fields.
  *
@@ -86,5 +88,27 @@ interface ProductOptionFieldManagerInterface {
    *   The product variation type ID.
    */
   public function deleteField(ProductOptionInterface $option, $variation_type_id);
+
+  /**
+   * Provides the option values associated with a product variation.
+   *
+   * @param \Drupal\commerce_product\Entity\ProductVariationInterface $product_variation
+   *   The order item entity.
+   *
+   * @return array
+   *   Array of option values associated witht the order item.
+   */
+  public function getOptionValues(ProductVariationInterface $product_variation);
+
+  /**
+   * Provides the option field names associated with a product variation.
+   *
+   * @param \Drupal\commerce_product\Entity\ProductVariationInterface $entity
+   *   The product variation entity.
+   *
+   * @return array
+   *   Array of option field names associated with the variation.
+   */
+  public function getOptionFieldNames(ProductVariationInterface $entity);
 
 }

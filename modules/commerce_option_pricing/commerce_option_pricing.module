@@ -31,24 +31,26 @@ function commerce_option_based_pricing_help($route_name, RouteMatchInterface $ro
 function commerce_option_pricing_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
 
-  if ($entity_type->id() === 'commerce_option_option_value') {
-    $fields['pricing'] = BaseFieldDefinition::create('commerce_price')
-      ->setLabel(t('Price'))
-      ->setDescription(t('The amount added to the base price.'))
-      ->setRequired(TRUE)
-      ->setDefaultValue(0)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'commerce_price_default',
-        'weight' => -1,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'commerce_list_price',
-        'weight' => -1,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+  if ($entity_type->id() != 'commerce_option_option_value') {
+    return $fields;
   }
+
+  $fields['pricing'] = BaseFieldDefinition::create('commerce_price')
+    ->setLabel(t('Price'))
+    ->setDescription(t('The amount added to the base price.'))
+    ->setRequired(FALSE)
+    ->setDefaultValue(0)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'commerce_price_default',
+      'weight' => -1,
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'commerce_list_price',
+      'weight' => -1,
+    ])
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
 
   return $fields;
 }
