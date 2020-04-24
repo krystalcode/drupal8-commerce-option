@@ -55,6 +55,10 @@ class OptionPriceResolver implements PriceResolverInterface {
         ->getStorage('commerce_option_option_value')
         ->load($option);
 
+      if (!$commerce_option) {
+        continue;
+      }
+
       // If option has a pricing associated with it, add that to base
       // price.
       if ($commerce_option->get('pricing')->isEmpty()) {

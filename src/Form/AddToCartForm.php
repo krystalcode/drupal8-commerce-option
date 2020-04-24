@@ -70,7 +70,7 @@ class AddToCartForm extends CommerceAddToCartForm {
       );
 
       $resolved_price = $this->chainPriceResolver
-        ->resolve($purchased_entity, $entity->getQuantity(), NULL, $context);
+        ->resolve($purchased_entity, $entity->getQuantity(), $context);
       $entity->setUnitPrice($resolved_price);
     }
 

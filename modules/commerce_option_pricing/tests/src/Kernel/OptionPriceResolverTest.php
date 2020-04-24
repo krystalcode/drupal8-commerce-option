@@ -108,11 +108,14 @@ class OptionPriceResolverTest extends CommerceKernelTestBase {
       'pricing' => new Price('4.00', 'USD'),
     ])->save();
 
-    \Drupal::getContainer()->get('tempstore.private')->get('commerce_option')->set('variation_id', $variation->id());
-    \Drupal::getContainer()->get('tempstore.private')->get('commerce_option')->set('options', [$black->id(), $yellow->id()]);
-
     $user = \Drupal::getContainer()->get('current_user')->getAccount();
-    $data = ['field_name' => 'price'];
+    $data = [
+      'field_name' => 'price',
+      'commerce_product_option' => [
+        $black->id() => $black->id(),
+        $yellow->id() => $yellow->id(),
+      ],
+    ];
     $context = new Context($user, $this->store, NULL, $data);
 
     $resolvedPrice = \Drupal::getContainer()->get('commerce_option_pricing.option_price_resolver')->resolve($variation, 1, $context);
