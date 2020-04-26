@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function commerce_option_shipping_install() {
+  $entity_type = \Drupal::service('entity_type.manager')
+  ->getDefinition('commerce_option_option_value');
+
+  \Drupal::service('entity.definition_update_manager')
+    ->updateEntityType($entity_type);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function commerce_option_pricing_uninstall() {
+  $entity_type = \Drupal::service('entity_type.manager')
+    ->getDefinition('commerce_option_option_value');
+
+  \Drupal::service('entity.definition_update_manager')
+    ->updateEntityType($entity_type);
+}
