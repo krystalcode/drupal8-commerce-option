@@ -1,7 +1,0 @@
-services:
-  commerce_option_pricing.option_price_resolver:
-    class: Drupal\commerce_option_pricing\Resolver\OptionPriceResolver
-    arguments:
-      - '@entity_type.manager'
-    tags:
-      - { name: commerce_price.price_resolver }
