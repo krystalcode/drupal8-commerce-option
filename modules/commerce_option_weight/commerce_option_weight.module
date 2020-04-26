@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains commerce_option_based_pricing.module.
+ * Contains hooks related to commerce option weight module.
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
