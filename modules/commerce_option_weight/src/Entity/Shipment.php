@@ -30,9 +30,10 @@ class Shipment extends CoreShipment {
     /** @var \Drupal\physical\Weight $weight */
     $weight = NULL;
 
-    $option_storage = \Drupal::entityTypeManager()
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $option_storage = $entity_type_manager
       ->getStorage('commerce_option_option_value');
-    $order_item_storage = \Drupal::entityTypeManager()
+    $order_item_storage = $entity_type_manager
       ->getStorage('commerce_order_item');
 
     foreach ($this->getItems() as $shipment_item) {
