@@ -2,11 +2,7 @@
 
 namespace Drupal\commerce_option_weight\Entity;
 
-use Drupal\commerce_option\Entity\ProductOptionValue;
-
 use Drupal\commerce_shipping\Entity\Shipment as CoreShipment;
-
-use Drupal\commerce_order\Entity\OrderItem;
 
 /**
  * Extends the shipment entity class and modifies the recalculate weight method.
@@ -14,6 +10,13 @@ use Drupal\commerce_order\Entity\OrderItem;
  * Adds the option weight value to shipment's total weight.
  */
 class Shipment extends CoreShipment {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|null
+   */
+  protected $entityTypeManager;
 
   /**
    * Recalculates the shipment's weight.
@@ -27,6 +30,11 @@ class Shipment extends CoreShipment {
     /** @var \Drupal\physical\Weight $weight */
     $weight = NULL;
 
+    $option_storage = \Drupal::entityTypeManager()
+      ->getStorage('commerce_option_option_value');
+    $order_item_storage = \Drupal::entityTypeManager()
+      ->getStorage('commerce_order_item');
+
     foreach ($this->getItems() as $shipment_item) {
       $shipment_item_weight = $shipment_item->getWeight();
       $weight = $weight ? $weight->add($shipment_item_weight) : $shipment_item_weight;
@@ -35,10 +43,7 @@ class Shipment extends CoreShipment {
         continue;
       }
 
-      $order_item = OrderItem::load(
-        $shipment_item->getOrderItemId()
-      );
-
+      $order_item = $order_item_storage->load($shipment_item->getOrderItemId());
       if (!$order_item->hasField('field_options')) {
         continue;
       }
@@ -47,9 +52,10 @@ class Shipment extends CoreShipment {
       // shipment weight.
       $options = $order_item->field_options->getValue();
       foreach ($options as $option) {
-        $product_option = ProductOptionValue::load($option['target_id']);
+        $product_option = $option_storage->load($option['target_id']);
 
-        if (!$product_option->get('shipping_weight')->first()) {
+        // If option does not have a weight set conitnue without adding weight.
+        if (!$product_option->get('shipping_weight')->first()->getValue()['number']) {
           continue;
         }
 

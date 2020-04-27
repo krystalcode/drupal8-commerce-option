@@ -16,11 +16,11 @@ use Drupal\Core\Routing\RouteMatchInterface;
 function commerce_option_weight_entity_base_field_info(
   EntityTypeInterface $entity_type
 ) {
-  $fields = [];
-
   if ($entity_type->id() != 'commerce_option_option_value') {
-    return $fields;
+    return;
   }
+
+  $fields = [];
 
   $fields['shipping_weight'] = BaseFieldDefinition::create('physical_measurement')
     ->setLabel(t('Weight'))
