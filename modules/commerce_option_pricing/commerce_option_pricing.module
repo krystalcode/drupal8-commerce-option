@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * Contains commerce_option_based_pricing.module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function commerce_option_based_pricing_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the commerce_option_based_pricing module.
+    case 'help.page.commerce_option_based_pricing':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module allows for option based pricing.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function commerce_option_pricing_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() != 'commerce_option_option_value') {
+    return $fields;
+  }
+
+  $fields['pricing'] = BaseFieldDefinition::create('commerce_price')
+    ->setLabel(t('Price'))
+    ->setDescription(t('The amount added to the base price.'))
+    ->setRequired(FALSE)
+    ->setDefaultValue(0)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'commerce_price_default',
+      'weight' => -1,
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'commerce_list_price',
+      'weight' => -1,
+    ])
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+
+  return $fields;
+}

@@ -4,11 +4,14 @@ namespace Drupal\commerce_option\Plugin\Field\FieldWidget;
 
 use Drupal\commerce_option\Entity\ProductOptionInterface;
 use Drupal\commerce_option\Resolver\OptionResolverInterface;
+
+use Drupal\commerce\Context;
 use Drupal\commerce\PurchasableEntityInterface;
-use Drupal\commerce_product\Entity\ProductInterface;
 use Drupal\commerce_product\ProductAttributeFieldManagerInterface;
+use Drupal\commerce_product\Plugin\Field\FieldWidget\ProductVariationWidgetBase;
 
 use Drupal\Component\Utility\Html;
+
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -16,7 +19,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,7 +33,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase implements ContainerFactoryPluginInterface {
+class ProductVariationOptionsWidget extends ProductVariationWidgetBase implements ContainerFactoryPluginInterface {
 
   /**
    * The option resolver.
@@ -46,13 +48,6 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
    * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $loggerFactory;
-
-  /**
-   * The tempstore service.
-   *
-   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
-   */
-  protected $tempStore;
 
   /**
    * Constructs a new ProductVariationAttributesWidget object.
@@ -77,21 +72,42 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
    *   The option resolver.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory.
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
-   *   The tempstore factory.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, EntityRepositoryInterface $entity_repository, ProductAttributeFieldManagerInterface $attribute_field_manager, OptionResolverInterface $option_resolver, LoggerChannelFactoryInterface $logger_factory, PrivateTempStoreFactory $temp_store_factory) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings, $entity_type_manager, $entity_repository, $temp_store_factory);
+  public function __construct(
+    $plugin_id,
+    $plugin_definition,
+    FieldDefinitionInterface $field_definition,
+    array $settings,
+    array $third_party_settings,
+    EntityTypeManagerInterface $entity_type_manager,
+    EntityRepositoryInterface $entity_repository,
+    ProductAttributeFieldManagerInterface $attribute_field_manager,
+    OptionResolverInterface $option_resolver,
+    LoggerChannelFactoryInterface $logger_factory
+  ) {
+    parent::__construct(
+      $plugin_id,
+      $plugin_definition,
+      $field_definition,
+      $settings,
+      $third_party_settings,
+      $entity_type_manager,
+      $entity_repository
+    );
 
     $this->optionResolver = $option_resolver;
     $this->loggerFactory = $logger_factory;
-    $this->tempStore = $temp_store_factory;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ) {
     return new static(
       $plugin_id,
       $plugin_definition,
@@ -102,21 +118,26 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
       $container->get('entity.repository'),
       $container->get('commerce_product.attribute_field_manager'),
       $container->get('commerce_option.option_resolver'),
-      $container->get('logger.factory'),
-      $container->get('tempstore.private')
+      $container->get('logger.factory')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+  public function formElement(
+    FieldItemListInterface $items,
+    $delta,
+    array $element,
+    array &$form,
+    FormStateInterface $form_state
+  ) {
     /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
     $product = $form_state->get('product');
     $variations = $this->loadEnabledVariations($product);
 
+    // Nothing to purchase, tell the parent form to hide itself.
     if (count($variations) === 0) {
-      // Nothing to purchase, tell the parent form to hide itself.
       $form_state->set('hide_form', TRUE);
       $element['variation'] = [
         '#type' => 'value',
@@ -126,9 +147,10 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
       return $element;
     }
 
+    // This widget only supports one variation.
     if (count($variations) > 1) {
-      // This widget only supports one variation.
       $form_state->set('hide_form', TRUE);
+
       $element['variation'] = [
         '#type' => 'value',
         '#value' => 0,
@@ -136,10 +158,13 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
 
       $this->loggerFactory
         ->get('commerce_option')
-        ->error('Product variation options widget only supports one variation. Product with the id @id has @count.', [
-          '@id' => $product->id(),
-          '@count' => count($variations),
-        ]);
+        ->error('
+          Product variation options widget only supports one variation.
+          Product with the id @id has @count.', [
+            '@id' => $product->id(),
+            '@count' => count($variations),
+          ]
+        );
 
       return $element;
     }
@@ -148,7 +173,6 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
     $selected_variation = reset($variations);
 
     $form_state->set('selected_variation', $selected_variation->id());
-    $this->tempStore->get('commerce_option')->set('variation_id', $selected_variation->id());
 
     $element['variation'] = [
       '#type' => 'value',
@@ -172,11 +196,13 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
 
     /** @var \Drupal\commerce_order\Entity\OrderItemInterface $order_item */
     $order_item = $items->getEntity();
+    $form_state->set('order_item', $order_item);
+
     $purchasableEntity = $order_item->getPurchasedEntity();
     $options = $this->optionResolver->resolveOptions($purchasableEntity);
 
     foreach ($options as $id => $option) {
-      $element['options'][$id] = [
+      $element['field_options'][$id] = [
         '#type' => $option->getElementType(),
         '#title' => $option->label(),
         '#options' => $this->getOptionValueNames($purchasableEntity, $option),
@@ -205,8 +231,12 @@ class ProductVariationOptionsWidget extends ProductVariationOptionWidgetBase imp
    * @return \Drupal\commerce_option\Entity\ProductOptionValueInterface[]
    *   Array of product option value names keyed by id.
    */
-  protected function getOptionValueNames(PurchasableEntityInterface $purchasableEntity, ProductOptionInterface $option) {
-    $optionValues = $this->optionResolver->resolveOptionValues($purchasableEntity, $option);
+  protected function getOptionValueNames(
+    PurchasableEntityInterface $purchasableEntity,
+    ProductOptionInterface $option
+  ) {
+    $optionValues = $this->optionResolver
+      ->resolveOptionValues($purchasableEntity, $option);
 
     $names = [];
     foreach ($optionValues as $optionValue) {
