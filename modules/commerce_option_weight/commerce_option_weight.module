@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks related to commerce option weight module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function commerce_option_weight_entity_base_field_info(
+  EntityTypeInterface $entity_type
+) {
+  if ($entity_type->id() != 'commerce_option_option_value') {
+    return;
+  }
+
+  $fields = [];
+
+  $fields['shipping_weight'] = BaseFieldDefinition::create('physical_measurement')
+    ->setLabel(t('Weight'))
+    ->setRequired(FALSE)
+    ->setSetting('measurement_type', 'weight')
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayOptions('form', [
+      'type' => 'weight',
+      'weight' => -1,
+    ]);
+
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function commerce_option_weight_entity_type_build(array &$entity_types) {
+  if (!$entity_types['commerce_shipment']) {
+    return;
+  }
+
+  $entity_types['commerce_shipment']->setClass(
+    '\Drupal\commerce_option_weight\Entity\Shipment'
+  );
+}
