@@ -237,7 +237,6 @@ class ProductVariationOptionsWidget extends ProductVariationWidgetBase implement
   ) {
     $optionValues = $this->optionResolver
       ->resolveOptionValues($purchasableEntity, $option);
-
     $names = [];
     foreach ($optionValues as $optionValue) {
       $names[$optionValue->id()] = $optionValue->getName();
