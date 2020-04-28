@@ -48,6 +48,13 @@ class CartEventSubscriber implements EventSubscriberInterface {
     $existingOrderItems = $event->getCart()->getItems();
 
     $orderItem = $event->getOrderItem();
+
+    // If the order item being added does not have field options, then
+    // do not continue.
+    if (!$orderItem->hasField('field_options')) {
+      return;
+    }
+
     $optionsItemList = $orderItem->field_options;
     $cart = $event->getCart();
     foreach ($existingOrderItems as $existingOrderItem) {
