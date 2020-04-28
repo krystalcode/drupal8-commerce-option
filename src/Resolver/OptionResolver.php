@@ -7,19 +7,10 @@ use Drupal\commerce_option\Entity\ProductOptionInterface;
 
 use Drupal\commerce\PurchasableEntityInterface;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-
 /**
  * Class OptionResolver.
  */
 class OptionResolver implements OptionResolverInterface {
-
-  /**
-   * The entity type manager to load the revision.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * The commerce options field manager.
@@ -31,16 +22,12 @@ class OptionResolver implements OptionResolverInterface {
   /**
    * Constructs a new OptionResolver object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity manager.
    * @param \Drupal\commerce_option\ProductOptionFieldManager $field_manager
    *   The option field manager.
    */
   public function __construct(
-    EntityTypeManagerInterface $entity_type_manager,
     ProductOptionFieldManager $field_manager
   ) {
-    $this->entityTypeManager = $entity_type_manager;
     $this->fieldManager = $field_manager;
   }
 

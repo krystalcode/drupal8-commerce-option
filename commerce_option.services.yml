@@ -4,7 +4,7 @@ services:
     arguments: ['@entity_field.manager', '@entity_type.bundle.info', '@entity_type.manager', '@cache.data']
   commerce_option.option_resolver:
     class: Drupal\commerce_option\Resolver\OptionResolver
-    arguments: ['@entity_type.manager', '@commerce_option.option_field_manager']
+    arguments: ['@commerce_option.option_field_manager']
   commerce_option.cart_subscriber:
     class: Drupal\commerce_option\EventSubscriber\CartEventSubscriber
     arguments: ['@tempstore.private']
