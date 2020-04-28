@@ -2,7 +2,9 @@
 
 namespace Drupal\commerce_option\Resolver;
 
+use Drupal\commerce_option\ProductOptionFieldManager;
 use Drupal\commerce_option\Entity\ProductOptionInterface;
+
 use Drupal\commerce\PurchasableEntityInterface;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -20,31 +22,39 @@ class OptionResolver implements OptionResolverInterface {
   protected $entityTypeManager;
 
   /**
+   * The commerce options field manager.
+   *
+   * @var \Drupal\commerce_option\ProductOptionFieldManager
+   */
+  protected $fieldManager;
+
+  /**
    * Constructs a new OptionResolver object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
+   * @param \Drupal\commerce_option\ProductOptionFieldManager $field_manager
+   *   The option field manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(
+    EntityTypeManagerInterface $entity_type_manager,
+    ProductOptionFieldManager $field_manager
+  ) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->fieldManager = $field_manager;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function resolveOptions(PurchasableEntityInterface $purchasable_entity) {
+  public function resolveOptions(
+    PurchasableEntityInterface $purchasable_entity
+  ) {
     $productOptions = [];
 
-    $productOptionIds = $this->entityTypeManager
-      ->getStorage('commerce_option_product_option')
-      ->getQuery()
-      ->condition('productTypes.*.target_id', $purchasable_entity->getProduct()->bundle())
-      ->execute();
-
-    if ($productOptionIds) {
-      $productOptions = $this->entityTypeManager
-        ->getStorage('commerce_option_product_option')
-        ->loadMultiple($productOptionIds);
+    $product_option_values = $this->fieldManager->getOptionValues($purchasable_entity);
+    foreach ($product_option_values as $product_option_value) {
+      $productOptions[] = $product_option_value->getProductOption();
     }
 
     return $productOptions;
@@ -53,10 +63,17 @@ class OptionResolver implements OptionResolverInterface {
   /**
    * {@inheritdoc}
    */
-  public function resolveOptionValues(PurchasableEntityInterface $purchasable_entity, ProductOptionInterface $option) {
+  public function resolveOptionValues(
+    PurchasableEntityInterface $purchasable_entity,
+    ProductOptionInterface $option
+  ) {
     $productOptionValues = [];
 
-    if (!in_array($purchasable_entity->getProduct()->bundle(), array_keys($option->getProductTypes()))) {
+    if (!in_array(
+        $purchasable_entity->getProduct()->bundle(),
+        array_keys($option->getProductTypes())
+      )
+    ) {
       return $productOptionValues;
     }
 

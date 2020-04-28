@@ -56,6 +56,10 @@ class CartEventSubscriber implements EventSubscriberInterface {
         continue;
       }
 
+      if (!$existingOrderItem->hasField('field_options')) {
+        continue;
+      }
+
       if (!$existingOrderItem->field_options->equals($optionsItemList)) {
         return;
       }
