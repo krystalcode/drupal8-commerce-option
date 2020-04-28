@@ -3,7 +3,7 @@
 /**
  * Implements hook_install().
  */
-function commerce_option_shipping_install() {
+function commerce_option_weight_install() {
   $entity_type = \Drupal::service('entity_type.manager')
   ->getDefinition('commerce_option_option_value');
 
@@ -14,7 +14,7 @@ function commerce_option_shipping_install() {
 /**
  * Implements hook_uninstall().
  */
-function commerce_option_pricing_uninstall() {
+function commerce_option_weight_uninstall() {
   $entity_type = \Drupal::service('entity_type.manager')
     ->getDefinition('commerce_option_option_value');
 
