@@ -43,6 +43,11 @@ class OptionPriceResolver implements PriceResolverInterface {
   ) {
     $options = $context->getData('commerce_product_option');
 
+    // If there are no options selected then return the entity base price.
+    if (!$options) {
+      return $entity->getPrice();
+    }
+
     $additional_price = new Price(
       '0',
       $entity->getPrice()->getCurrencyCode()
