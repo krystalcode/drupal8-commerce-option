@@ -50,6 +50,10 @@ class AddToCartForm extends CommerceAddToCartForm {
 
     $purchased_entity = $form_state->getValue('purchased_entity');
     foreach ($purchased_entity as $variation) {
+      if (empty($variation['field_options'])) {
+        continue;
+      }
+
       $options = $variation['field_options'];
     }
 

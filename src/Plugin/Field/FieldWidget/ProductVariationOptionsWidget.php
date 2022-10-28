@@ -192,6 +192,12 @@ class ProductVariationOptionsWidget extends ProductVariationWidgetBase implement
       '#attributes' => [
         'class' => ['option-widgets'],
       ],
+      '#prefix' => '<div class = "product__commerce_options__pricing_note">'
+      . $this->t('
+        IMPORTANT: Some options will have additional prices and
+        the product price will change depending on the options you select.'
+      )
+      . '</div>',
     ];
 
     /** @var \Drupal\commerce_order\Entity\OrderItemInterface $order_item */
