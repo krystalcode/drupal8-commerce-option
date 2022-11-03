@@ -1,9 +1,8 @@
 name: 'Commerce Option Weight'
 type: module
 description: 'This module allows for option based shipping weight.'
-core: 8.x
+core_version_requirement: ^8 || ^9
 package: 'Commerce (contrib)'
 dependencies:
   - commerce_option:commerce_option
   - commerce_shipping:commerce_shipping
-
