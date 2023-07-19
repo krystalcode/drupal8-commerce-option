@@ -45,6 +45,12 @@ class Shipment extends CoreShipment {
       }
 
       $order_item = $order_item_storage->load($shipment_item->getOrderItemId());
+      // We should have the order item at this point, but we have encountered
+      // cases where the order item was still referenced in the shipment item
+      // after being deleted.
+      if (!$order_item) {
+        continue;
+      }
       if (!$order_item->hasField('field_options')) {
         continue;
       }
