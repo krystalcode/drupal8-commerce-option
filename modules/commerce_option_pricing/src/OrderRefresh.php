@@ -17,12 +17,12 @@ class OrderRefresh extends OrderRefreshBase {
    * {@inheritdoc}
    */
   public function refresh(OrderInterface $order) {
-    $commerce_product_options = [];
     parent::refresh($order);
 
     // Loop through each order item and re-calculate the price considering the
     // options price.
     foreach ($order->getItems() as $order_item) {
+      $commerce_product_options = [];
       $purchased_entity = $order_item->getPurchasedEntity();
 
       if (!$purchased_entity) {
